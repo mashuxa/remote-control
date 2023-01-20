@@ -1,6 +1,6 @@
-import { mouse, left, right, up, down } from '@nut-tree/nut-js';
+import { mouse, left, right, up, down, Point } from '@nut-tree/nut-js';
 
-export default async (command: string, offset: number) => {
+export default async (command: string, offset: number): Promise<Point | undefined> => {
   switch (command) {
     case 'left':
       await mouse.move(left(offset));
