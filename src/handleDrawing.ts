@@ -1,4 +1,5 @@
 import { mouse, Button, down, left, right, up, straightTo } from "@nut-tree/nut-js";
+import { DrawingCommands } from "./types";
 
 const CIRCLE_SMOOTH_STEPS = 200;
 
@@ -6,7 +7,7 @@ export default async (command: string, [width, length]: number[]): Promise<void>
   await mouse.pressButton(Button.LEFT);
 
   switch (command) {
-    case 'circle':
+    case DrawingCommands.circle:
       const mousePosition = await mouse.getPosition();
       const startXPosition = mousePosition.x - width;
 
@@ -20,8 +21,8 @@ export default async (command: string, [width, length]: number[]): Promise<void>
       }
 
       break;
-    case 'rectangle':
-    case 'square':
+    case DrawingCommands.rectangle:
+    case DrawingCommands.square:
       const height = length || width;
 
       await mouse.move(right(width));
