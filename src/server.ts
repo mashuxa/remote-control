@@ -1,10 +1,7 @@
 import { createWebSocketStream, WebSocketServer } from 'ws';
 import { config } from "dotenv";
-import handleDrawing from "./handleDrawing";
-import handleMouse from "./handleMouse";
-import handleScreenshot from "./handleScreenshot";
-import { GeneralCommands } from "./types";
 import errorMessages from "./errorMessages";
+import commandsHandler from "./commandsHandler";
 
 config();
 
@@ -18,35 +15,17 @@ webSocketServer.on('connection', (ws) => {
   });
 
   webSocketStream.on('data', async (data: string) => {
+    console.log(`<- ${data}`);
+
     try {
       const [input, ...args] = data.split(' ');
       const updatedArgs = args.map(value => Number(value))
       const [command, type] = input.split('_');
+      const result = await commandsHandler(input, command, type, updatedArgs);
 
-      switch (command) {
-        case GeneralCommands.mouse:
-          const coordinates = await handleMouse(type, updatedArgs[0]);
+      webSocketStream.write(result);
 
-          if (coordinates) {
-            webSocketStream.write(`${input} ${coordinates.x},${coordinates.y}`);
-          } else {
-            webSocketStream.write(data);
-          }
-
-          break;
-        case GeneralCommands.draw:
-          await handleDrawing(type, updatedArgs);
-
-          webSocketStream.write(data);
-
-          break;
-        case GeneralCommands.prnt:
-          const screenshotData = await handleScreenshot();
-
-          webSocketStream.write(`${data} ${screenshotData}`);
-
-          break;
-      }
+      console.log(`-> ${result}`);
     } catch {
       console.error(errorMessages.commonError);
     }
@@ -58,3 +37,11 @@ webSocketServer.on('connection', (ws) => {
 webSocketServer.on('error', () => {
   console.log(errorMessages.websocketError);
 });
+
+process.on('SIGINT', () => {
+  console.log('WebSocketServer stopped');
+  webSocketServer.clients.forEach((client) => client.close());
+  webSocketServer.close();
+  process.exit();
+});
+

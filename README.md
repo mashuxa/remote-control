@@ -21,3 +21,9 @@ The program is started by npm script start in following way:
 ```bash
 npm run start 
 ```
+
+To test the event handling when the process is closed, use the script:
+
+```bash
+npm run start:prod 
+```
