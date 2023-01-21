@@ -27,10 +27,16 @@ webSocketServer.on('connection', (ws) => {
 
         break;
       case 'draw':
-        handleDrawing(type, updatedArgs);
+        await handleDrawing(type, updatedArgs);
+
+        ws.send(data.toString());
+
         break;
       case 'prnt':
-        handleScreenshot();
+        const screenshotData = await handleScreenshot();
+
+        ws.send(`${data.toString()} ${screenshotData}`);
+
         break;
     }
   });
