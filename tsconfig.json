@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
+    "outDir": "dist",
+    "alwaysStrict": true,
+    "project": "remote-control",
+  },
+  "include": ["./src"],
+  "ts-node": {
+    "esm": true
+  }
+}
