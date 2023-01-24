@@ -5,6 +5,21 @@
 
 ## Getting Started
 
+User interface for remote control backend is [here](https://github.com/rolling-scopes-school/remote-control).
+You should clone this repository, install and run:
+
+Install all dependencies:
+
+```bash
+npm i
+```
+
+```bash
+npm run start
+```
+
+---
+
 Rename .env.example => .env and set your variables, for example:
 ```bash
 PORT=8080
